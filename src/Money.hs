@@ -6,7 +6,7 @@ module Money
   ( COP
   , EUR
   , USD
-  , Amount (..)
+  , Money (..)
   , ExchangeRate (..)
   , convert
   , convert'
@@ -39,8 +39,8 @@ data USD
 --
 --
 
-newtype Amount currency =
-  Amount
+newtype Money currency =
+  Money
     { getAmount :: Rational
     }
   deriving (Eq, Fractional, Num, Ord)
@@ -50,27 +50,27 @@ newtype Amount currency =
 --
 --
 
-instance Show (Amount COP) where
-  show Amount {..} =
-    '$' : show (fromRational getAmount :: Double)
+instance Show (Money COP) where
+  show Money {..} =
+    "COP " ++ show (fromRational getAmount :: Double)
 
 
 -- |
 --
 --
 
-instance Show (Amount EUR) where
-  show Amount {..} =
-    '€' : show (fromRational getAmount :: Double)
+instance Show (Money EUR) where
+  show Money {..} =
+    "EUR " ++ show (fromRational getAmount :: Double)
 
 
 -- |
 --
 --
 
-instance Show (Amount USD) where
-  show Amount {..} =
-    '$' : show (fromRational getAmount :: Double)
+instance Show (Money USD) where
+  show Money {..} =
+    "USD " ++ show (fromRational getAmount :: Double)
 
 
 -- |
@@ -97,23 +97,29 @@ instance Show (ExchangeRate currency1 currency2) where
 
 -- |
 --
---
+-- >>> usdToCop = 3182.01 :: ExchangeRate USD COP
+-- >>> convert usdToCop 1000
+-- COP 3182010.0
 
 convert
   :: ExchangeRate currency1 currency2
-  -> Amount currency1
-  -> Amount currency2
-convert ExchangeRate {..} Amount {..} =
-  Amount (getAmount * getExchangeRate)
+  -> Money currency1
+  -> Money currency2
+convert ExchangeRate {..} Money {..} =
+  Money (getAmount * getExchangeRate)
 
 
 -- |
 --
 --
+--
+-- >>> usdToCop = 3182.01 :: ExchangeRate USD COP
+-- >>> convert' usdToCop (convert usdToCop 1000) == 1000
+-- True
 
 convert'
   :: ExchangeRate currency2 currency1
-  -> Amount currency1
-  -> Amount currency2
+  -> Money currency1
+  -> Money currency2
 convert' ExchangeRate {..} =
   convert (ExchangeRate (1 / getExchangeRate))
