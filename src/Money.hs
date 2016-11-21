@@ -134,6 +134,20 @@ instance Show (Money cur2) => Show (ExchangeRate cur1 cur2) where
 -- |
 --
 --
+--
+-- Examples:
+--
+-- >>> interchange (1.06 :: ExchangeRate EUR USD)
+-- EUR 0.94...
+--
+-- >>> interchange (0.94 :: ExchangeRate USD EUR)
+-- USD 1.06...
+--
+-- >>> interchange (interchange (1.06 :: ExchangeRate EUR USD))
+-- USD 1.06
+--
+-- >>> interchange (interchange (0.94 :: ExchangeRate USD EUR))
+-- EUR 0.94
 
 interchange
   :: ExchangeRate cur1 cur2
