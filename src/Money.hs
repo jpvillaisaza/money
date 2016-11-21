@@ -158,9 +158,20 @@ interchange (ExchangeRate exchangeRate) =
 
 -- |
 --
+--
+--
+-- Examples:
+--
 -- >>> usdToCop = 3182.01 :: ExchangeRate USD COP
+--
 -- >>> convert usdToCop 1000
 -- COP 3182010.0
+--
+-- >>> convert (interchange usdToCop) 1000
+-- USD 0.31...
+--
+-- >>> convert (interchange usdToCop) (convert usdToCop 1000)
+-- USD 1000.0
 
 convert
   :: ExchangeRate cur1 cur2
@@ -174,9 +185,21 @@ convert (ExchangeRate exchangeRate) (Money amount) =
 --
 --
 --
+-- Examples:
+--
 -- >>> usdToCop = 3182.01 :: ExchangeRate USD COP
--- >>> convert' usdToCop (convert usdToCop 1000) == 1000
--- True
+--
+-- >>> convert' usdToCop 1000
+-- USD 0.31...
+--
+-- >>> convert' (interchange usdToCop) 1000
+-- COP 3182010.0
+--
+-- >>> convert' usdToCop (convert' (interchange usdToCop) 1000)
+-- USD 1000.0
+--
+-- >>> convert' usdToCop (convert usdToCop 1000)
+-- USD 1000.0
 
 convert'
   :: ExchangeRate cur2 cur1
