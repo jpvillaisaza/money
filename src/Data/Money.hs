@@ -3,6 +3,14 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE RecordWildCards #-}
 
+----------------------------------------------------------------------
+-- |
+-- Module: Data.Money
+--
+--
+--
+----------------------------------------------------------------------
+
 module Data.Money
   ( -- * Currencies
     module Data.Money.Currency
@@ -23,12 +31,12 @@ import Data.Money.Currency
 
 
 ----------------------------------------------------------------------
---
+-- * Money
 ----------------------------------------------------------------------
 
 -- |
 --
---
+-- Money in a currency.
 --
 -- Examples:
 --
@@ -65,7 +73,7 @@ newtype Money currency =
 
 -- |
 --
---
+-- Show money in COP.
 
 instance Show (Money COP) where
   show Money {..} =
@@ -74,7 +82,7 @@ instance Show (Money COP) where
 
 -- |
 --
---
+-- Show money in EUR.
 
 instance Show (Money EUR) where
   show Money {..} =
@@ -83,7 +91,7 @@ instance Show (Money EUR) where
 
 -- |
 --
---
+-- Show money in USD.
 
 instance Show (Money USD) where
   show Money {..} =
@@ -91,12 +99,13 @@ instance Show (Money USD) where
 
 
 ----------------------------------------------------------------------
---
+-- * Exchange rates
 ----------------------------------------------------------------------
 
 -- |
 --
---
+-- An exchange rate, that is, the value of one currency for the
+-- purpose of conversion to another.
 --
 -- Examples:
 --
@@ -126,12 +135,12 @@ instance Show (Money cur2) => Show (ExchangeRate cur1 cur2) where
 
 
 ----------------------------------------------------------------------
---
+-- * Interchanges
 ----------------------------------------------------------------------
 
 -- |
 --
---
+-- Interchange (or flip) an exchange rate.
 --
 -- Examples:
 --
@@ -155,12 +164,12 @@ interchange (ExchangeRate exchangeRate) =
 
 
 ----------------------------------------------------------------------
---
+-- * Conversions
 ----------------------------------------------------------------------
 
 -- |
 --
---
+-- Convert money using an exchange rate.
 --
 -- Examples:
 --
@@ -185,7 +194,7 @@ convert (ExchangeRate exchangeRate) (Money amount) =
 
 -- |
 --
---
+-- Convert money using an interchanged (or flipped) exchange rate.
 --
 -- Examples:
 --
