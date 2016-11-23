@@ -15,5 +15,5 @@ main :: IO ()
 main =
   doctest
     [ "-isrc"
-    , "src/Money.hs"
+    , "src/Data/Money.hs"
     ]
