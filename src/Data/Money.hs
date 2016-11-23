@@ -5,9 +5,7 @@
 
 module Data.Money
   ( -- * Currencies
-    COP
-  , EUR
-  , USD
+    module Data.Money.Currency
     -- * Money
   , Money (..)
     -- * Exchange rates
@@ -20,30 +18,8 @@ module Data.Money
   )
   where
 
-
-----------------------------------------------------------------------
---
-----------------------------------------------------------------------
-
--- |
---
---
-
-data COP
-
-
--- |
---
---
-
-data EUR
-
-
--- |
---
---
-
-data USD
+-- money
+import Data.Money.Currency
 
 
 ----------------------------------------------------------------------
