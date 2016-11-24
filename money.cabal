@@ -33,7 +33,6 @@ library
       src
   exposed-modules:
       Data.Money
-      Data.Money.Currency
   build-depends:
       base >= 4.9 && < 4.10
   default-language:

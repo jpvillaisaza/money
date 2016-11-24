@@ -1,6 +1,8 @@
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE RecordWildCards #-}
 
 ----------------------------------------------------------------------
@@ -13,7 +15,7 @@
 
 module Data.Money
   ( -- * Currencies
-    module Data.Money.Currency
+    Currency (..)
     -- * Money
   , Money (..)
     -- * Exchange rates
@@ -26,8 +28,24 @@ module Data.Money
   )
   where
 
--- money
-import Data.Money.Currency
+
+-- $setup
+--
+-- >>> :set -XDataKinds
+
+
+----------------------------------------------------------------------
+-- * Currencies
+----------------------------------------------------------------------
+
+-- |
+--
+-- Currencies.
+
+data Currency
+  = COP -- ^ The Colombian peso.
+  | EUR -- ^ The euro.
+  | USD -- ^ The United States dollar.
 
 
 ----------------------------------------------------------------------
@@ -64,7 +82,7 @@ import Data.Money.Currency
 -- >>> 1000 < (500 :: Money EUR)
 -- False
 
-newtype Money currency =
+newtype Money (currency :: Currency) =
   Money
     { getAmount :: Rational
     }
@@ -75,7 +93,7 @@ newtype Money currency =
 --
 -- Show money in COP.
 
-instance Show (Money COP) where
+instance Show (Money 'COP) where
   show Money {..} =
     "COP " ++ show (fromRational getAmount :: Double)
 
@@ -84,7 +102,7 @@ instance Show (Money COP) where
 --
 -- Show money in EUR.
 
-instance Show (Money EUR) where
+instance Show (Money 'EUR) where
   show Money {..} =
     "EUR " ++ show (fromRational getAmount :: Double)
 
@@ -93,7 +111,7 @@ instance Show (Money EUR) where
 --
 -- Show money in USD.
 
-instance Show (Money USD) where
+instance Show (Money 'USD) where
   show Money {..} =
     "USD " ++ show (fromRational getAmount :: Double)
 
@@ -118,9 +136,9 @@ instance Show (Money USD) where
 -- >>> 0.94 :: ExchangeRate USD EUR
 -- EUR 0.94
 
-newtype ExchangeRate currency1 currency2 =
+newtype ExchangeRate (cur1 :: Currency) (cur2 :: Currency)  =
   ExchangeRate
-    { getExchangeRate :: Money currency2
+    { getExchangeRate :: Money cur2
     }
   deriving (Eq, Fractional, Num)
 
