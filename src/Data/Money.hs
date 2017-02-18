@@ -28,6 +28,9 @@ module Data.Money
   )
   where
 
+-- base
+import Numeric.Natural (Natural)
+
 
 -- $setup
 --
@@ -84,9 +87,9 @@ data Currency
 
 newtype Money (currency :: Currency) =
   Money
-    { getAmount :: Rational
+    { getAmount :: Natural
     }
-  deriving (Eq, Fractional, Num, Ord)
+  deriving (Eq, Num, Ord)
 
 
 -- |
@@ -95,7 +98,7 @@ newtype Money (currency :: Currency) =
 
 instance Show (Money 'COP) where
   show Money {..} =
-    "COP " ++ show (fromRational getAmount :: Double)
+    "COP " ++ show getAmount
 
 
 -- |
@@ -104,7 +107,7 @@ instance Show (Money 'COP) where
 
 instance Show (Money 'EUR) where
   show Money {..} =
-    "EUR " ++ show (fromRational getAmount :: Double)
+    "EUR " ++ show getAmount
 
 
 -- |
@@ -113,7 +116,7 @@ instance Show (Money 'EUR) where
 
 instance Show (Money 'USD) where
   show Money {..} =
-    "USD " ++ show (fromRational getAmount :: Double)
+    "USD " ++ show getAmount
 
 
 ----------------------------------------------------------------------
@@ -140,7 +143,7 @@ newtype ExchangeRate (cur1 :: Currency) (cur2 :: Currency)  =
   ExchangeRate
     { getExchangeRate :: Money cur2
     }
-  deriving (Eq, Fractional, Num)
+  deriving (Eq, Num)
 
 
 -- |
@@ -178,7 +181,7 @@ interchange
   :: ExchangeRate cur1 cur2
   -> ExchangeRate cur2 cur1
 interchange (ExchangeRate exchangeRate) =
-  ExchangeRate (Money (1 / getAmount exchangeRate))
+  ExchangeRate (Money (1 `div` getAmount exchangeRate))
 
 
 ----------------------------------------------------------------------
