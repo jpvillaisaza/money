@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: fpco/stack-build:lts-7
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-.stack-{{ checksum "stack.yaml" }}-{{ checksum "money.cabal" }}
+            - v1-.stack-{{ checksum "stack.yaml" }}
+            - v1-.stack-
+      - run:
+          command: stack setup
+      - run:
+          name: Build dependencies
+          command: stack build --test --only-dependencies
+      - save_cache:
+          key: v1-.stack-{{ checksum "stack.yaml" }}-{{ checksum "money.cabal" }}
+          paths:
+            - ~/.stack/
+      - run:
+          command: stack build --test
