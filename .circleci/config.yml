@@ -11,6 +11,8 @@ jobs:
             - v1-.stack-{{ checksum "stack.yaml" }}
             - v1-.stack-
       - run:
+          command: stack setup
+      - run:
           name: Build dependencies
           command: stack build --test --only-dependencies
       - save_cache:
